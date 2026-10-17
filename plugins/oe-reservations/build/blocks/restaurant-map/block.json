@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "oe/restaurant-map",
+  "title": "Restaurant Map",
+  "category": "widgets",
+  "icon": "location-alt",
+  "description": "OpenStreetMap of the restaurant location from the reservation settings. Loads only when scrolled into view.",
+  "keywords": [
+    "map",
+    "location",
+    "address",
+    "openstreetmap"
+  ],
+  "textdomain": "oe-reservations",
+  "attributes": {
+    "zoom": {
+      "type": "number",
+      "default": 16
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

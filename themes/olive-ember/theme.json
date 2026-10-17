@@ -1,0 +1,163 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": true,
+		"useRootPaddingAwareAlignments": true,
+		"color": {
+			"defaultPalette": false,
+			"defaultGradients": false,
+			"defaultDuotone": false,
+			"custom": false,
+			"customGradient": false,
+			"palette": [
+				{ "slug": "chalk", "name": "Chalk", "color": "#FBF6EE" },
+				{ "slug": "cream", "name": "Cream", "color": "#F4EADB" },
+				{ "slug": "surface", "name": "Surface", "color": "#FFFFFF" },
+				{ "slug": "limestone", "name": "Limestone", "color": "#E8DFD0" },
+				{ "slug": "tapenade", "name": "Tapenade", "color": "#1E2118" },
+				{ "slug": "tapenade-soft", "name": "Tapenade (soft)", "color": "#5A5E50" },
+				{ "slug": "olive", "name": "Olive", "color": "#4F5B2A" },
+				{ "slug": "olive-soft", "name": "Olive (soft)", "color": "#E5E8D3" },
+				{ "slug": "saffron", "name": "Saffron", "color": "#F2B33D" },
+				{ "slug": "ember", "name": "Ember", "color": "#E2621B" },
+				{ "slug": "ember-deep", "name": "Ember (deep)", "color": "#C2410C" }
+			]
+		},
+		"typography": {
+			"defaultFontSizes": false,
+			"customFontSize": false,
+			"fluid": true,
+			"fontFamilies": [
+				{
+					"slug": "display",
+					"name": "Outfit",
+					"fontFamily": "Outfit, 'Segoe UI', system-ui, sans-serif",
+					"fontFace": [
+						{ "fontFamily": "Outfit", "fontStyle": "normal", "fontWeight": "100 900", "fontDisplay": "swap", "src": [ "file:./assets/fonts/outfit-latin.woff2" ] }
+					]
+				},
+				{
+					"slug": "accent",
+					"name": "Fraunces (italic)",
+					"fontFamily": "Fraunces, 'Iowan Old Style', Georgia, serif",
+					"fontFace": [
+						{ "fontFamily": "Fraunces", "fontStyle": "italic", "fontWeight": "300 800", "fontDisplay": "swap", "src": [ "file:./assets/fonts/fraunces-latin-italic.woff2" ] }
+					]
+				},
+				{
+					"slug": "body",
+					"name": "Manrope",
+					"fontFamily": "Manrope, 'Segoe UI', system-ui, sans-serif",
+					"fontFace": [
+						{ "fontFamily": "Manrope", "fontStyle": "normal", "fontWeight": "200 800", "fontDisplay": "swap", "src": [ "file:./assets/fonts/manrope-latin.woff2" ] }
+					]
+				}
+			],
+			"fontSizes": [
+				{ "slug": "small", "name": "Small", "size": "0.875rem", "fluid": false },
+				{ "slug": "medium", "name": "Medium", "size": "1.0625rem", "fluid": false },
+				{ "slug": "large", "name": "Large", "size": "1.375rem", "fluid": { "min": "1.2rem", "max": "1.375rem" } },
+				{ "slug": "x-large", "name": "Extra large", "size": "2.25rem", "fluid": { "min": "1.75rem", "max": "2.25rem" } },
+				{ "slug": "xx-large", "name": "Huge", "size": "3.5rem", "fluid": { "min": "2.4rem", "max": "3.5rem" } },
+				{ "slug": "display", "name": "Display", "size": "4.75rem", "fluid": { "min": "2.75rem", "max": "4.75rem" } }
+			]
+		},
+		"spacing": {
+			"defaultSpacingSizes": false,
+			"units": [ "px", "rem", "%", "vw", "vh" ],
+			"spacingSizes": [
+				{ "slug": "10", "name": "XS", "size": "0.5rem" },
+				{ "slug": "20", "name": "S", "size": "1rem" },
+				{ "slug": "30", "name": "M", "size": "clamp(1.25rem, 2.5vw, 2rem)" },
+				{ "slug": "40", "name": "L", "size": "clamp(2rem, 5vw, 3.5rem)" },
+				{ "slug": "50", "name": "XL", "size": "clamp(3rem, 8vw, 6rem)" },
+				{ "slug": "60", "name": "XXL", "size": "clamp(4rem, 11vw, 9rem)" }
+			]
+		},
+		"layout": {
+			"contentSize": "44rem",
+			"wideSize": "76rem"
+		},
+		"shadow": {
+			"defaultPresets": false,
+			"presets": [
+				{ "slug": "card", "name": "Card", "shadow": "0 20px 40px -24px rgb(30 33 24 / 0.28)" },
+				{ "slug": "plate", "name": "Plate", "shadow": "0 40px 60px -30px rgb(30 33 24 / 0.45)" }
+			]
+		},
+		"border": {
+			"radius": true
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--chalk)",
+			"text": "var(--wp--preset--color--tapenade)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--body)",
+			"fontSize": "var(--wp--preset--font-size--medium)",
+			"lineHeight": "1.65"
+		},
+		"spacing": {
+			"blockGap": "1.25rem",
+			"padding": {
+				"left": "clamp(1rem, 4vw, 2.5rem)",
+				"right": "clamp(1rem, 4vw, 2.5rem)"
+			}
+		},
+		"elements": {
+			"link": {
+				"color": { "text": "var(--wp--preset--color--ember-deep)" },
+				"typography": { "textDecoration": "underline" },
+				":hover": { "color": { "text": "var(--wp--preset--color--tapenade)" } }
+			},
+			"heading": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--display)",
+					"fontWeight": "600",
+					"lineHeight": "1.05",
+					"letterSpacing": "-0.02em"
+				}
+			},
+			"h1": { "typography": { "fontSize": "var(--wp--preset--font-size--xx-large)" } },
+			"h2": { "typography": { "fontSize": "var(--wp--preset--font-size--x-large)" } },
+			"h3": { "typography": { "fontSize": "var(--wp--preset--font-size--large)" } },
+			"button": {
+				"color": {
+					"background": "var(--wp--preset--color--ember-deep)",
+					"text": "var(--wp--preset--color--surface)"
+				},
+				"border": { "radius": "999px" },
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--body)",
+					"fontSize": "1rem",
+					"fontWeight": "700",
+					"letterSpacing": "0.01em"
+				},
+				"spacing": { "padding": { "top": "0.85rem", "bottom": "0.85rem", "left": "1.6rem", "right": "1.6rem" } },
+				":hover": { "color": { "background": "var(--wp--preset--color--tapenade)" } },
+				":focus": { "outline": { "color": "var(--wp--preset--color--saffron)", "offset": "3px", "style": "solid", "width": "3px" } }
+			}
+		},
+		"blocks": {
+			"core/navigation": {
+				"typography": { "fontSize": "1rem", "fontWeight": "600" }
+			},
+			"core/separator": {
+				"color": { "text": "var(--wp--preset--color--limestone)" }
+			},
+			"core/quote": {
+				"typography": { "fontFamily": "var(--wp--preset--font-family--accent)", "fontStyle": "italic", "fontSize": "var(--wp--preset--font-size--large)" }
+			}
+		}
+	},
+	"templateParts": [
+		{ "name": "header", "title": "Header", "area": "header" },
+		{ "name": "footer", "title": "Footer", "area": "footer" }
+	],
+	"customTemplates": [
+		{ "name": "page-wide", "title": "Page without title", "postTypes": [ "page" ] }
+	]
+}

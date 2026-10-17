@@ -1,0 +1,1401 @@
+/*
+ * Olive & Ember – theme styles.
+ *
+ * Tokens (colours, fonts, sizes, spacing, shadows) live in theme.json; this file covers
+ * what theme.json cannot express: the wordmark, highlighted words, plate "stages",
+ * cards, section rhythm, decorative details and motion.
+ *
+ * Direction: warm and food-first (cut-out plates on cream, white rounded cards, pills)
+ * kept calm by an editorial rhythm (white space, letter-spaced labels, offset photos).
+ */
+
+:root {
+	--oe-header-height: 4.5rem;
+	--oe-section: clamp(4rem, 10vw, 8rem);
+	--oe-ink: var(--wp--preset--color--tapenade);
+	--oe-ink-soft: var(--wp--preset--color--tapenade-soft);
+	--oe-paper: var(--wp--preset--color--chalk);
+	--oe-cream: var(--wp--preset--color--cream);
+	--oe-surface: var(--wp--preset--color--surface);
+	--oe-line: var(--wp--preset--color--limestone);
+	--oe-olive: var(--wp--preset--color--olive);
+	--oe-olive-soft: var(--wp--preset--color--olive-soft);
+	--oe-saffron: var(--wp--preset--color--saffron);
+	--oe-ember: var(--wp--preset--color--ember);
+	--oe-ember-deep: var(--wp--preset--color--ember-deep);
+	--oe-shadow-card: var(--wp--preset--shadow--card);
+	--oe-radius: 1.25rem;
+	--oe-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+
+html {
+	scroll-padding-top: calc(var(--oe-header-height) + 1rem);
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizelegibility;
+}
+
+::selection {
+	background: var(--oe-saffron);
+	color: var(--oe-ink);
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+	outline: 3px solid var(--oe-saffron);
+	outline-offset: 3px;
+}
+
+h1,
+h2,
+h3 {
+	text-wrap: balance;
+}
+
+p {
+	text-wrap: pretty;
+}
+
+/* Highlighted word: Fraunces italic in ember, underlined by a saffron brushstroke. */
+:where(h1, h2) em {
+	padding-bottom: 0.08em;
+	background: url(../images/deco/brush.svg) no-repeat left bottom / 100% 0.28em;
+	color: var(--oe-ember);
+	font-family: var(--wp--preset--font-family--accent);
+	font-style: italic;
+	font-weight: 400;
+	letter-spacing: -0.01em;
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+.screen-reader-text {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+	white-space: nowrap;
+	word-wrap: normal !important;
+}
+
+.screen-reader-text:focus {
+	z-index: 100000;
+	width: auto;
+	height: auto;
+	padding: 0.75rem 1rem;
+	clip: auto;
+	background: var(--oe-paper);
+	color: var(--oe-ink);
+}
+
+/* Photo slot not filled yet (see assets/images/photos/README.md). */
+.oe-placeholder {
+	display: grid;
+	background: repeating-linear-gradient(135deg, var(--oe-cream) 0 14px, #efe3d0 14px 28px);
+	color: var(--oe-ink-soft);
+	font: 600 0.7rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+	text-align: center;
+	place-items: center;
+}
+
+.oe-placeholder > span {
+	padding: 0.5rem;
+	opacity: 0.8;
+}
+
+.oe-photo {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.oe-photo.oe-placeholder {
+	display: grid;
+}
+
+/* ------------------------------------------------------------------ *
+ * Header
+ * ------------------------------------------------------------------ */
+
+/* Sticky on the template-part wrapper: the inner group is exactly as tall as its parent. */
+.wp-site-blocks > header.wp-block-template-part {
+	position: sticky;
+	z-index: 50;
+	top: 0;
+}
+
+.admin-bar .wp-site-blocks > header.wp-block-template-part {
+	top: var(--wp-admin--admin-bar--height, 32px);
+}
+
+.oe-header {
+	padding-block: 1rem;
+	background: color-mix(in srgb, var(--oe-paper) 90%, transparent);
+	backdrop-filter: blur(12px);
+	transition: box-shadow 0.25s;
+}
+
+.oe-header.is-scrolled {
+	box-shadow: 0 1px 0 var(--oe-line);
+}
+
+.oe-header__bar {
+	gap: 1rem;
+}
+
+.oe-header__nav {
+	gap: clamp(1rem, 3vw, 2.5rem);
+}
+
+.oe-header .wp-block-navigation {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.oe-header .wp-block-navigation a {
+	position: relative;
+	text-decoration: none;
+}
+
+/* Active page: a small ember dot under the link. */
+.oe-header .wp-block-navigation-item__content::after {
+	position: absolute;
+	bottom: -0.55rem;
+	left: 50%;
+	width: 5px;
+	height: 5px;
+	margin-left: -2.5px;
+	border-radius: 50%;
+	background: var(--oe-ember);
+	content: "";
+	opacity: 0;
+	transform: scale(0.4);
+	transition: opacity 0.2s, transform 0.2s;
+}
+
+.oe-header .wp-block-navigation-item__content:hover::after,
+.oe-header .wp-block-navigation-item__content[aria-current="page"]::after {
+	opacity: 1;
+	transform: none;
+}
+
+.oe-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content::after {
+	display: none;
+}
+
+.oe-header__cta .wp-block-button__link {
+	padding: 0.65rem 1.35rem;
+	font-size: 0.95rem;
+}
+
+/* Wordmark: "Olive" and "Ember" in Outfit, the ampersand in the italic accent. */
+.oe-wordmark {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.18em;
+	color: var(--oe-ink);
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 1.5rem;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+	line-height: 1;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.oe-wordmark:hover {
+	color: var(--oe-ink);
+}
+
+.oe-wordmark__amp {
+	color: var(--oe-ember);
+	font-family: var(--wp--preset--font-family--accent);
+	font-size: 1.1em;
+	font-style: italic;
+	font-weight: 400;
+}
+
+@media (max-width: 30rem) {
+
+	.oe-wordmark {
+		font-size: 1.25rem;
+	}
+
+	.oe-header__cta .wp-block-button__link {
+		padding: 0.5rem 0.95rem;
+		font-size: 0.875rem;
+	}
+}
+
+/* ------------------------------------------------------------------ *
+ * Buttons
+ * ------------------------------------------------------------------ */
+
+.wp-element-button,
+.wp-block-button__link {
+	transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.wp-block-button__link:hover {
+	transform: translateY(-1px);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link {
+	border: 1.5px solid var(--oe-ink);
+	background: transparent;
+	color: var(--oe-ink);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover {
+	background: var(--oe-ink);
+	color: var(--oe-paper);
+}
+
+.oe-footer .wp-block-button__link:hover {
+	background: var(--oe-paper);
+	color: var(--oe-ink);
+}
+
+.oe-round-button {
+	display: inline-grid;
+	width: 2.85rem;
+	height: 2.85rem;
+	border: 1.5px solid var(--oe-line);
+	border-radius: 50%;
+	background: var(--oe-surface);
+	color: var(--oe-ink);
+	font-size: 1.1rem;
+	cursor: pointer;
+	place-items: center;
+	transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.oe-round-button:hover {
+	border-color: var(--oe-ink);
+}
+
+.oe-round-button.is-primary {
+	border-color: var(--oe-ember-deep);
+	background: var(--oe-ember-deep);
+	color: var(--oe-surface);
+}
+
+.oe-round-button.is-primary:hover {
+	border-color: var(--oe-ink);
+	background: var(--oe-ink);
+}
+
+.oe-round-button[aria-disabled="true"] {
+	cursor: default;
+	opacity: 0.4;
+}
+
+/* ------------------------------------------------------------------ *
+ * Shared section devices
+ * ------------------------------------------------------------------ */
+
+/* Editorial label: small, uppercase, widely tracked. */
+.oe-eyebrow,
+.oe-label-title {
+	margin: 0 0 1rem;
+	color: var(--oe-olive);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+.oe-label-title:not(:first-child) {
+	margin-top: 2.5rem;
+}
+
+.oe-link-arrow a {
+	color: var(--oe-ink);
+	font-weight: 700;
+	text-decoration-color: var(--oe-saffron);
+	text-decoration-thickness: 2px;
+	text-underline-offset: 0.35em;
+}
+
+.oe-link-arrow a::after {
+	display: inline-block;
+	margin-left: 0.35em;
+	content: "→";
+	transition: transform 0.2s;
+}
+
+.oe-link-arrow a:hover::after {
+	transform: translateX(0.25em);
+}
+
+.oe-lead {
+	color: var(--oe-ink-soft);
+	font-size: var(--wp--preset--font-size--large);
+	line-height: 1.55;
+}
+
+.oe-note {
+	color: var(--oe-ink-soft);
+	font-size: 0.95rem;
+}
+
+.oe-section-head {
+	gap: 1rem 2rem;
+	margin-bottom: 0.5rem;
+}
+
+.oe-section-head h2 {
+	margin: 0;
+}
+
+/* Small floating ingredients around plates. Purely decorative. */
+.oe-deco {
+	position: absolute;
+	width: clamp(2.75rem, 6vw, 4.5rem);
+	height: auto;
+	pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ *
+ * Plate "stage": a cut-out plate inside a dashed saffron ring
+ * ------------------------------------------------------------------ */
+
+/*
+ * Sections with a stage or floating decorations: the spinning ring and the ingredients
+ * stick out of their box, so the overflow is clipped (clip, unlike hidden, creates no
+ * scroll container and leaves shadows above and below intact).
+ */
+.oe-hero,
+.oe-page-hero,
+.oe-not-found,
+.oe-reviews {
+	overflow-x: clip;
+}
+
+.oe-stage {
+	position: relative;
+	width: min(100%, 34rem);
+	margin-inline: auto;
+	aspect-ratio: 1;
+}
+
+.oe-stage--small {
+	width: min(100%, 22rem);
+}
+
+.oe-stage__ring {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	inset: 0;
+}
+
+.oe-stage__plate {
+	position: absolute;
+	width: 82%;
+	height: 82%;
+	inset: 9%;
+	object-fit: contain;
+	filter: drop-shadow(0 2.25rem 2rem rgb(30 33 24 / 0.28));
+}
+
+.oe-stage__plate.oe-placeholder {
+	border-radius: 50%;
+	box-shadow: var(--wp--preset--shadow--plate);
+	filter: none;
+}
+
+.oe-stage .oe-deco--sprig {
+	top: 4%;
+	left: -2%;
+}
+
+.oe-stage .oe-deco--lemon {
+	right: -1%;
+	bottom: 18%;
+}
+
+.oe-stage .oe-deco--chilli {
+	top: 38%;
+	right: -6%;
+	width: clamp(2.25rem, 4.5vw, 3.5rem);
+}
+
+.oe-stage__tag {
+	position: absolute;
+	top: 8%;
+	right: 2%;
+	margin: 0;
+	padding: 0.5rem 1rem;
+	border-radius: 999px;
+	background: var(--oe-surface);
+	box-shadow: var(--oe-shadow-card);
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.oe-stage__tag::before {
+	display: inline-block;
+	width: 0.55em;
+	height: 0.55em;
+	margin-right: 0.5em;
+	border-radius: 50%;
+	background: var(--oe-ember);
+	content: "";
+	vertical-align: 0.05em;
+}
+
+/* Floating dish card over the hero plate. */
+.oe-float-card {
+	position: absolute;
+	bottom: 5%;
+	left: -4%;
+	display: flex;
+	align-items: center;
+	gap: 0.85rem;
+	max-width: 16.5rem;
+	padding: 0.75rem 1.1rem 0.75rem 0.75rem;
+	border-radius: 1.1rem;
+	background: var(--oe-surface);
+	box-shadow: var(--oe-shadow-card);
+	color: var(--oe-ink);
+	text-decoration: none;
+	transition: transform 0.25s var(--oe-ease);
+}
+
+.oe-float-card:hover {
+	color: var(--oe-ink);
+	transform: translateY(-3px);
+}
+
+.oe-float-card__img {
+	flex: none;
+	width: 3.5rem;
+	height: 3.5rem;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.oe-float-card__body {
+	display: grid;
+	line-height: 1.3;
+}
+
+.oe-float-card__name {
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 600;
+}
+
+.oe-float-card__desc {
+	color: var(--oe-ink-soft);
+	font-size: 0.8rem;
+}
+
+.oe-float-card__price {
+	margin-top: 0.15rem;
+	color: var(--oe-ember-deep);
+	font-weight: 700;
+}
+
+/* ------------------------------------------------------------------ *
+ * Home: hero
+ * ------------------------------------------------------------------ */
+
+.oe-hero {
+	padding-block: clamp(1.5rem, 5vw, 3.5rem) clamp(3rem, 7vw, 5rem);
+}
+
+.oe-hero__grid {
+	gap: clamp(2rem, 5vw, 4rem);
+}
+
+.oe-hero__title {
+	margin-block: 0 1.5rem;
+	font-size: var(--wp--preset--font-size--display);
+	line-height: 1.02;
+	letter-spacing: -0.035em;
+}
+
+.oe-hero__lead {
+	max-width: 32em;
+	color: var(--oe-ink-soft);
+	font-size: 1.125rem;
+	line-height: 1.65;
+}
+
+.oe-hero .wp-block-buttons {
+	margin-top: 2rem;
+}
+
+.oe-hero__status {
+	margin-top: 1.75rem;
+}
+
+.oe-hero__status .oe-open-badge {
+	margin: 0;
+	font-size: 0.95rem;
+}
+
+@media (max-width: 48rem) {
+
+	.oe-stage {
+		width: min(88%, 22rem);
+	}
+
+	.oe-float-card {
+		left: -6%;
+		max-width: 14rem;
+	}
+}
+
+/* Page-load sequence: text rises in order, the plate settles and the ingredients float. */
+@media (prefers-reduced-motion: no-preference) {
+
+	.oe-hero .oe-eyebrow,
+	.oe-hero__title,
+	.oe-hero__lead,
+	.oe-hero .wp-block-buttons,
+	.oe-hero__status {
+		animation: oe-rise 0.9s var(--oe-ease) both;
+	}
+
+	.oe-hero__title {
+		animation-delay: 0.08s;
+	}
+
+	.oe-hero__lead {
+		animation-delay: 0.18s;
+	}
+
+	.oe-hero .wp-block-buttons {
+		animation-delay: 0.28s;
+	}
+
+	.oe-hero__status {
+		animation-delay: 0.4s;
+	}
+
+	.oe-hero .oe-stage__plate {
+		animation: oe-settle 1.4s var(--oe-ease) both;
+	}
+
+	.oe-hero .oe-stage__ring {
+		animation: oe-spin 120s linear infinite;
+	}
+
+	.oe-stage .oe-deco {
+		animation: oe-float 7s ease-in-out infinite;
+	}
+
+	.oe-stage .oe-deco--lemon {
+		animation-delay: -2.5s;
+	}
+
+	.oe-stage .oe-deco--chilli {
+		animation-delay: -4.5s;
+	}
+
+	.oe-reveal {
+		opacity: 0;
+		transform: translateY(1.5rem);
+		transition: opacity 0.8s ease, transform 0.8s var(--oe-ease);
+	}
+
+	.oe-reveal.is-visible {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes oe-rise {
+
+	from {
+		opacity: 0;
+		transform: translateY(1rem);
+	}
+}
+
+@keyframes oe-settle {
+
+	from {
+		opacity: 0;
+		transform: translateY(1.5rem) rotate(-12deg) scale(0.96);
+	}
+}
+
+@keyframes oe-spin {
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes oe-float {
+
+	50% {
+		transform: translateY(-0.6rem) rotate(6deg);
+	}
+}
+
+/* ------------------------------------------------------------------ *
+ * Home: menu sections strip
+ * ------------------------------------------------------------------ */
+
+.oe-strip-sections {
+	padding-block: 0 var(--oe-section);
+}
+
+.oe-sections ul {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: clamp(1rem, 3vw, 2.5rem);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.oe-sections a {
+	display: grid;
+	justify-items: center;
+	gap: 0.2rem;
+	color: var(--oe-ink);
+	text-align: center;
+	text-decoration: none;
+}
+
+.oe-sections__plate {
+	width: min(100%, 9.5rem);
+	aspect-ratio: 1;
+	margin-bottom: 0.85rem;
+	border-radius: 50%;
+	object-fit: contain;
+	transition: transform 0.45s var(--oe-ease);
+}
+
+.oe-sections__plate.oe-placeholder {
+	box-shadow: var(--wp--preset--shadow--plate);
+}
+
+.oe-sections a:hover .oe-sections__plate {
+	transform: rotate(-10deg) scale(1.04);
+}
+
+.oe-sections__name {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 1.15rem;
+	font-weight: 600;
+}
+
+.oe-sections__note {
+	color: var(--oe-ink-soft);
+	font-size: 0.875rem;
+}
+
+@media (max-width: 40rem) {
+
+	.oe-sections ul {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		row-gap: 2rem;
+	}
+}
+
+/* ------------------------------------------------------------------ *
+ * Home: the kitchen (editorial)
+ * ------------------------------------------------------------------ */
+
+.oe-story,
+.oe-signature,
+.oe-suppliers,
+.oe-reviews {
+	padding-block: var(--oe-section);
+}
+
+/* Consecutive sections on the same background share one gap, not two. */
+.oe-signature + .oe-suppliers,
+.oe-suppliers + .oe-reviews {
+	padding-top: 0;
+}
+
+.oe-story__grid {
+	gap: clamp(2rem, 6vw, 5rem);
+}
+
+.oe-story h2 {
+	margin-bottom: 1.5rem;
+}
+
+.oe-story p {
+	color: var(--oe-ink-soft);
+}
+
+.oe-pullquote {
+	margin: 2.25rem 0 0;
+	padding: 0;
+	border: 0;
+	font-family: var(--wp--preset--font-family--accent);
+	font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+	font-style: italic;
+	line-height: 1.35;
+}
+
+.oe-story .oe-pullquote p {
+	color: var(--oe-ink);
+}
+
+.oe-pullquote p::before {
+	content: "“";
+}
+
+.oe-pullquote p::after {
+	content: "”";
+}
+
+.oe-pullquote cite {
+	display: block;
+	margin-top: 0.85rem;
+	color: var(--oe-olive);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: 0.75rem;
+	font-style: normal;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+}
+
+/* Two photos, the second one dropped lower: a page from a cookbook. */
+.oe-offset-photos {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	align-items: start;
+	gap: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.oe-offset-photos > * {
+	width: 100%;
+	border-radius: 0.25rem;
+	object-fit: cover;
+}
+
+.oe-offset-photos__a {
+	aspect-ratio: 3 / 4;
+}
+
+.oe-offset-photos__b {
+	margin-top: clamp(3rem, 10vw, 7rem);
+	aspect-ratio: 4 / 5;
+}
+
+.oe-facts {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.5rem;
+	margin: clamp(3rem, 7vw, 5rem) 0 0;
+	padding: 1.75rem 0 0;
+	border-top: 1px solid var(--oe-line);
+	list-style: none;
+}
+
+.oe-facts li {
+	display: grid;
+	gap: 0.35rem;
+	color: var(--oe-ink-soft);
+	font-size: 0.95rem;
+}
+
+.oe-facts strong {
+	color: var(--oe-ink);
+	font-family: var(--wp--preset--font-family--display);
+	font-size: clamp(2.25rem, 5vw, 3.5rem);
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -0.04em;
+	line-height: 1;
+}
+
+@media (max-width: 40rem) {
+
+	.oe-facts {
+		grid-template-columns: 1fr;
+	}
+
+	.oe-facts li {
+		grid-template-columns: 6.5rem 1fr;
+		align-items: baseline;
+	}
+}
+
+/* ------------------------------------------------------------------ *
+ * Home: chef's picks, suppliers, guest book
+ * ------------------------------------------------------------------ */
+
+.oe-signature .oe-menu {
+	margin-top: 1rem;
+}
+
+.oe-suppliers__grid {
+	gap: clamp(2rem, 6vw, 5rem);
+}
+
+.oe-suppliers__photo {
+	width: 100%;
+	border-radius: 0.25rem;
+	aspect-ratio: 5 / 4;
+	object-fit: cover;
+}
+
+.oe-suppliers__lead {
+	margin-bottom: 2rem;
+	color: var(--oe-ember-deep);
+	font-size: 1.15rem;
+}
+
+.oe-people {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.oe-people li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.25rem 1rem;
+	padding: 1rem 0;
+	border-top: 1px solid var(--oe-line);
+}
+
+.oe-people__name {
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 0.95rem;
+	font-weight: 500;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+.oe-people__what {
+	color: var(--oe-ink-soft);
+	font-size: 0.9rem;
+}
+
+.oe-reviews__grid {
+	gap: clamp(2rem, 6vw, 5rem);
+}
+
+/* Chef in a saffron disc, with a rating chip. */
+.oe-portrait {
+	position: relative;
+	width: min(100%, 26rem);
+	margin-inline: auto;
+	aspect-ratio: 1;
+}
+
+.oe-portrait::before {
+	position: absolute;
+	border-radius: 50%;
+	background: var(--oe-saffron);
+	content: "";
+	inset: 12% 6% 0;
+}
+
+.oe-portrait__img {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: bottom;
+}
+
+.oe-portrait__img.oe-placeholder {
+	position: absolute;
+	width: auto;
+	height: auto;
+	border-radius: 50%;
+	inset: 12% 6% 0;
+	opacity: 0.85;
+}
+
+.oe-portrait .oe-deco--lemon {
+	top: 0;
+	right: 4%;
+}
+
+.oe-portrait__note {
+	position: absolute;
+	bottom: 8%;
+	left: -2%;
+	margin: 0;
+	padding: 0.75rem 1.1rem;
+	border-radius: 1rem;
+	background: var(--oe-surface);
+	box-shadow: var(--oe-shadow-card);
+	color: var(--oe-ink-soft);
+	font-size: 0.8rem;
+	line-height: 1.4;
+}
+
+.oe-portrait__note strong {
+	margin-right: 0.25rem;
+	color: var(--oe-ink);
+	font-family: var(--wp--preset--font-family--display);
+	font-size: 1.35rem;
+}
+
+.oe-portrait__note [aria-hidden] {
+	color: var(--oe-saffron);
+	letter-spacing: 0.1em;
+}
+
+/* Carousel: native scroll-snap; theme.js wires the arrow buttons. */
+.oe-carousel__track {
+	display: grid;
+	grid-auto-columns: 100%;
+	grid-auto-flow: column;
+	gap: 1.5rem;
+	margin: 1.5rem 0 0;
+	padding: 0 0 0.5rem;
+	overflow-x: auto;
+	list-style: none;
+	overscroll-behavior-x: contain;
+	scroll-snap-type: x mandatory;
+	scrollbar-width: none;
+}
+
+.oe-carousel__track::-webkit-scrollbar {
+	display: none;
+}
+
+.oe-carousel__slide {
+	scroll-snap-align: start;
+}
+
+.oe-review {
+	margin: 0;
+}
+
+.oe-review blockquote {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.oe-review blockquote p {
+	margin: 0;
+	font-family: var(--wp--preset--font-family--accent);
+	font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+	font-style: italic;
+	line-height: 1.4;
+}
+
+.oe-review figcaption {
+	margin-top: 1.25rem;
+	color: var(--oe-olive);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+.oe-review__stars {
+	margin-right: 0.5rem;
+	color: var(--oe-saffron);
+	letter-spacing: 0.1em;
+}
+
+.oe-carousel__nav {
+	display: flex;
+	gap: 0.6rem;
+	margin-top: 1.75rem;
+}
+
+.oe-carousel__nav[hidden] {
+	display: none;
+}
+
+/* ------------------------------------------------------------------ *
+ * Booking call to action
+ * ------------------------------------------------------------------ */
+
+.oe-cta-wrap {
+	padding-block: 0 var(--oe-section);
+}
+
+.oe-cta {
+	position: relative;
+	overflow: hidden;
+	padding: clamp(3rem, 7vw, 5rem) clamp(1.25rem, 4vw, 3rem);
+	border-radius: 1.75rem;
+	text-align: center;
+}
+
+.oe-cta > * {
+	position: relative;
+}
+
+.oe-cta .oe-eyebrow {
+	justify-content: center;
+}
+
+.oe-cta h2 {
+	margin-top: 0;
+	font-size: var(--wp--preset--font-size--xx-large);
+}
+
+/* Ember on cream falls under 3:1, so the deep shade is used here. */
+.oe-cta h2 em {
+	color: var(--oe-ember-deep);
+}
+
+.oe-cta p:not(.oe-eyebrow) {
+	color: var(--oe-ink-soft);
+}
+
+.oe-cta .wp-block-buttons {
+	margin-top: 1.75rem;
+}
+
+.oe-cta__plate {
+	position: absolute !important;
+	top: 50%;
+	width: clamp(10rem, 20vw, 15rem);
+	height: auto;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	object-fit: contain;
+	transform: translateY(-50%);
+}
+
+.oe-cta__plate.oe-placeholder {
+	box-shadow: var(--wp--preset--shadow--plate);
+}
+
+.oe-cta__plate--left {
+	left: clamp(-6rem, -6vw, -3rem);
+}
+
+.oe-cta__plate--right {
+	right: clamp(-6rem, -6vw, -3rem);
+}
+
+.oe-cta .oe-cta__hours {
+	margin-top: 2.5rem;
+	padding: 1.25rem 1.5rem 0.5rem;
+	border-radius: var(--oe-radius);
+	background: var(--oe-surface);
+	box-shadow: var(--oe-shadow-card);
+	text-align: left;
+}
+
+@media (max-width: 64rem) {
+
+	.oe-cta__plate {
+		display: none !important;
+	}
+}
+
+/* ------------------------------------------------------------------ *
+ * Inner pages
+ * ------------------------------------------------------------------ */
+
+.oe-page-hero {
+	padding-block: clamp(2rem, 6vw, 4rem) clamp(1rem, 3vw, 2rem);
+}
+
+.oe-page-hero__grid {
+	gap: clamp(2rem, 5vw, 4rem);
+}
+
+.oe-page-hero__title {
+	margin: 0 0 1.25rem;
+	font-size: var(--wp--preset--font-size--xx-large);
+	letter-spacing: -0.03em;
+}
+
+.oe-page-hero--compact .oe-page-hero__title {
+	margin-bottom: 0.75rem;
+}
+
+.oe-page-hero .oe-lead {
+	max-width: 36em;
+	margin-top: 0;
+}
+
+.oe-page-hero__art .oe-stage {
+	width: min(100%, 20rem);
+}
+
+@media (max-width: 48rem) {
+
+	.oe-page-hero__art {
+		display: none;
+	}
+}
+
+/* Section shortcuts on the menu page. */
+.oe-pills ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: 1.75rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.oe-pills a {
+	display: inline-block;
+	padding: 0.5rem 1.15rem;
+	border: 1.5px solid var(--oe-line);
+	border-radius: 999px;
+	background: var(--oe-surface);
+	color: var(--oe-ink);
+	font-family: var(--wp--preset--font-family--display);
+	font-weight: 500;
+	text-decoration: none;
+	transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.oe-pills a:hover {
+	border-color: var(--oe-ink);
+	background: var(--oe-ink);
+	color: var(--oe-paper);
+}
+
+.oe-content > .oe-lead:first-child {
+	margin-top: 0;
+}
+
+.oe-content {
+	padding-bottom: var(--oe-section);
+}
+
+.oe-content > .alignfull:last-child {
+	margin-bottom: calc(var(--oe-section) * -1);
+}
+
+.oe-page-head {
+	padding-block: clamp(2rem, 6vw, 4rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.oe-page-title {
+	margin: 0;
+	font-size: var(--wp--preset--font-size--xx-large);
+	letter-spacing: -0.03em;
+}
+
+.oe-booking-layout {
+	gap: clamp(2rem, 4vw, 3rem);
+	margin-top: clamp(1rem, 3vw, 2rem);
+}
+
+.oe-booking__aside {
+	align-self: flex-start;
+	padding: clamp(1.25rem, 3vw, 2rem);
+	border-radius: 1.5rem;
+	background: var(--oe-surface);
+	box-shadow: var(--oe-shadow-card);
+}
+
+.oe-practical {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.oe-practical li {
+	position: relative;
+	padding-left: 1.5rem;
+	color: var(--oe-ink-soft);
+}
+
+.oe-practical li::before {
+	position: absolute;
+	top: 0.6em;
+	left: 0;
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	background: var(--oe-olive);
+	content: "";
+}
+
+.oe-practical li + li {
+	margin-top: 0.75rem;
+}
+
+.oe-wide-photo {
+	margin-block: clamp(1rem, 3vw, 2rem) clamp(2.5rem, 6vw, 4rem);
+}
+
+.oe-wide-photo > * {
+	width: 100%;
+	border-radius: 1.5rem;
+	aspect-ratio: 21 / 9;
+	object-fit: cover;
+}
+
+.oe-contact {
+	gap: clamp(2rem, 5vw, 4rem);
+}
+
+.oe-address {
+	margin-bottom: 1.25rem;
+	font-size: 1.1rem;
+	font-style: normal;
+	line-height: 1.6;
+}
+
+.oe-contact-links {
+	margin: 0 0 1.25rem;
+	padding: 0;
+	list-style: none;
+}
+
+.oe-contact-links li {
+	display: flex;
+	gap: 1rem;
+	padding: 0.65rem 0;
+	border-top: 1px solid var(--oe-line);
+}
+
+.oe-contact-links span {
+	min-width: 4.5rem;
+	color: var(--oe-ink-soft);
+}
+
+.oe-not-found {
+	padding-block: clamp(3rem, 8vw, 6rem);
+}
+
+/* ------------------------------------------------------------------ *
+ * Footer
+ * ------------------------------------------------------------------ */
+
+.oe-footer {
+	padding-block: clamp(3.5rem, 8vw, 6rem) 2rem;
+}
+
+.oe-footer a {
+	color: var(--oe-paper);
+	text-decoration-color: color-mix(in srgb, var(--oe-paper) 35%, transparent);
+	text-underline-offset: 0.25em;
+}
+
+.oe-footer a:hover {
+	color: var(--oe-saffron);
+}
+
+.oe-footer__top {
+	gap: 1rem 2rem;
+	margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+	padding-bottom: clamp(2rem, 4vw, 3rem);
+	border-bottom: 1px solid color-mix(in srgb, var(--oe-paper) 14%, transparent);
+}
+
+.oe-footer .oe-wordmark {
+	color: var(--oe-paper);
+	font-size: clamp(2.5rem, 7vw, 4.5rem);
+	letter-spacing: -0.035em;
+}
+
+.oe-footer .oe-wordmark__amp {
+	color: var(--oe-saffron);
+}
+
+.oe-footer__tagline {
+	max-width: 22em;
+	margin: 0;
+	opacity: 0.8;
+}
+
+.oe-footer__cols {
+	gap: 2rem;
+	font-size: 0.95rem;
+}
+
+.oe-footer__label {
+	margin: 0 0 1rem;
+	color: var(--oe-saffron);
+	font-family: var(--wp--preset--font-family--body);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+}
+
+.oe-footer__cols p {
+	margin: 0;
+	line-height: 1.8;
+}
+
+.oe-footer__links {
+	display: grid;
+	gap: 0.35rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.oe-footer .oe-hours__list {
+	font-size: 0.9rem;
+}
+
+.oe-footer__small {
+	margin-top: clamp(2.5rem, 5vw, 3.5rem);
+	padding-top: 1.5rem;
+	border-top: 1px solid color-mix(in srgb, var(--oe-paper) 14%, transparent);
+	font-size: 0.8rem;
+	opacity: 0.7;
+}
+
+/* ------------------------------------------------------------------ *
+ * Demo banner (plugin)
+ * ------------------------------------------------------------------ */
+
+.oe-demo-banner {
+	margin: 0;
+	padding: 0.45rem 1rem;
+	background: var(--oe-ink);
+	color: var(--oe-paper);
+	font-size: 0.85rem;
+	text-align: center;
+}
+
+.oe-demo-banner a {
+	color: var(--oe-saffron);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+	}
+
+	.wp-block-button__link:hover,
+	.oe-float-card:hover {
+		transform: none;
+	}
+}
+
+/* Template parts sit flush: sections carry their own spacing. */
+.wp-site-blocks > * + * {
+	margin-block-start: 0;
+}
+
+a[href^="tel:"] {
+	white-space: nowrap;
+}

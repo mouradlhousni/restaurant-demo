@@ -1,0 +1,4 @@
+# Generated / third-party CSS
+**/*.min.css
+**/build/**
+**/assets/vendor/**

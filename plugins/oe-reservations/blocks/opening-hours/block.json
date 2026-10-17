@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "oe/opening-hours",
+	"title": "Opening Hours",
+	"category": "widgets",
+	"icon": "clock",
+	"description": "Opening hours from the reservation settings, with a live “Open now / Closed” badge.",
+	"keywords": [ "hours", "schedule", "open", "restaurant" ],
+	"textdomain": "oe-reservations",
+	"attributes": {
+		"variant": { "type": "string", "enum": [ "table", "compact", "strip", "badge" ], "default": "table" },
+		"showBadge": { "type": "boolean", "default": true }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide" ]
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

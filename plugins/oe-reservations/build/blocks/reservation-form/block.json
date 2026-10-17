@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "oe/reservation-form",
+  "title": "Reservation Form",
+  "category": "widgets",
+  "icon": "calendar-alt",
+  "description": "Multi-step table booking form with live availability: date, party size, time, details, confirmation.",
+  "keywords": [
+    "booking",
+    "reservation",
+    "table",
+    "restaurant"
+  ],
+  "textdomain": "oe-reservations",
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "multiple": false,
+    "align": [
+      "wide"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Démo Playground – Guide</title>
+<style>
+	:root {
+		--bg: #faf6f0; --surface: #ffffff; --text: #2b2420; --muted: #6f625a;
+		--accent: #b5532f; --accent-soft: #f5e3d9; --border: #e7ddd2;
+		--ok: #3f7d4e; --warn: #a86a12; --code-bg: #f3ece4;
+	}
+	@media (prefers-color-scheme: dark) {
+		:root:not([data-theme="light"]) {
+			--bg: #1b1714; --surface: #24201c; --text: #efe7de; --muted: #b3a597;
+			--accent: #e48a62; --accent-soft: #3a2a22; --border: #3a332d;
+			--ok: #7cc28d; --warn: #e3ad5a; --code-bg: #2e2823;
+		}
+	}
+	* { box-sizing: border-box; }
+	body {
+		margin: 0; background: var(--bg); color: var(--text);
+		font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	}
+	main { max-width: 820px; margin: 0 auto; padding: 48px 16px 80px; }
+	header p { color: var(--muted); margin-top: 4px; }
+	h1 { font-family: Georgia, "Times New Roman", serif; font-size: 2.1rem; line-height: 1.2; margin: 0; }
+	h2 { font-family: Georgia, serif; font-size: 1.35rem; margin: 0 0 8px; }
+	h3 { font-size: 1rem; margin: 18px 0 6px; }
+	a { color: var(--accent); }
+	code, pre { font-family: ui-monospace, Consolas, monospace; font-size: .88rem; }
+	code { background: var(--code-bg); padding: 1px 6px; border-radius: 4px; }
+	pre {
+		background: var(--code-bg); padding: 12px 14px; border-radius: 8px;
+		overflow-x: auto; margin: 8px 0; white-space: pre;
+	}
+	pre code { background: none; padding: 0; }
+	.step {
+		background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+		padding: 20px 22px; margin: 18px 0; display: grid; grid-template-columns: 40px 1fr; gap: 14px;
+	}
+	.num {
+		width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff;
+		display: grid; place-items: center; font-weight: 700;
+	}
+	.step > div { min-width: 0; }
+	.note { border-left: 4px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 6px; margin: 12px 0; }
+	.status { display: inline-block; font-size: .8rem; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; }
+	.status.ok { color: var(--ok); } .status.warn { color: var(--warn); }
+	ul.check { list-style: none; padding: 0; margin: 8px 0; }
+	ul.check li { padding: 4px 0 4px 30px; position: relative; }
+	ul.check input { position: absolute; left: 0; top: 9px; accent-color: var(--accent); }
+	.copy-row { display: flex; gap: 8px; align-items: stretch; margin: 10px 0; }
+	.copy-row input {
+		flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px;
+		background: var(--code-bg); color: var(--text); font-family: ui-monospace, Consolas, monospace; font-size: .82rem;
+	}
+	button, .btn {
+		background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px;
+		font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block;
+	}
+	button:focus-visible, .btn:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+	table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: .92rem; }
+	th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+	th { color: var(--muted); font-weight: 600; }
+	@media (max-width: 560px) {
+		.step { grid-template-columns: 1fr; padding: 16px; }
+		h1 { font-size: 1.7rem; }
+	}
+</style>
+</head>
+<body>
+<main>
+<header>
+	<h1>Mettre Olive &amp; Ember en démo sur WordPress Playground</h1>
+	<p>Guide pas à pas — dépôt <code>mouradlhousni/restaurant-demo</code>, branche <code>master</code>, fichier <code>blueprint.json</code>.</p>
+</header>
+
+<div class="note">
+	<strong>Principe :</strong> rien n'est hébergé. Le visiteur ouvre un lien <code>playground.wordpress.net</code>,
+	son navigateur télécharge <code>blueprint.json</code> depuis GitHub, puis installe WordPress (PHP en WebAssembly + SQLite),
+	le plugin et le thème directement depuis le dépôt. Tout disparaît quand l'onglet est fermé.
+</div>
+
+<section class="step">
+	<span class="num">1</span>
+	<div>
+		<h2>Vérifier les prérequis</h2>
+		<table>
+			<tr><th>Élément</th><th>État</th></tr>
+			<tr><td>Dépôt GitHub <strong>public</strong> (Playground ne peut pas lire un dépôt privé)</td><td><span class="status ok">OK</span></td></tr>
+			<tr><td>Assets JS/CSS compilés commités (<code>plugins/oe-reservations/build/</code>)</td><td><span class="status ok">OK</span></td></tr>
+			<tr><td>Plugin autonome sans <code>vendor/</code> Composer (autoloader PSR-4 intégré)</td><td><span class="status ok">OK</span></td></tr>
+			<tr><td><code>OE_DEMO_MODE</code> à <code>true</code> dans le blueprint</td><td><span class="status ok">OK</span></td></tr>
+			<tr><td>Branche locale synchronisée avec <code>origin/master</code></td><td><span class="status ok">OK</span> à re-vérifier après chaque modif</td></tr>
+		</table>
+		<p>Si tu modifies des blocs (JS dans <code>src/</code>), recompile avant de commiter, sinon Playground chargera l'ancien <code>build/</code> :</p>
+		<pre><code>npm run build</code></pre>
+	</div>
+</section>
+
+<section class="step">
+	<span class="num">2</span>
+	<div>
+		<h2>Pousser le code sur GitHub</h2>
+		<p>Le blueprint installe le thème et le plugin depuis la branche <code>master</code> du dépôt distant : seul ce qui est poussé compte.</p>
+		<pre><code>git status
+git add -A
+git commit -m "Prepare Playground demo"
+git push origin master</code></pre>
+		<p>Vérifie que le blueprint est bien accessible (doit afficher le JSON) :</p>
+		<p><a href="https://raw.githubusercontent.com/mouradlhousni/restaurant-demo/master/blueprint.json" target="_blank" rel="noopener">raw.githubusercontent.com/…/master/blueprint.json</a></p>
+		<div class="note">GitHub met en cache les fichiers <code>raw</code> environ 5 minutes : après un push, attends un peu ou teste dans une fenêtre privée.</div>
+	</div>
+</section>
+
+<section class="step">
+	<span class="num">3</span>
+	<div>
+		<h2>Ouvrir la démo</h2>
+		<p>Voici le lien public de la démo (déjà présent en haut du <code>README.md</code>) :</p>
+		<div class="copy-row">
+			<input id="demo-url" readonly aria-label="Lien de la démo Playground"
+				value="https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/mouradlhousni/restaurant-demo/master/blueprint.json">
+			<button type="button" data-copy="demo-url">Copier</button>
+		</div>
+		<a class="btn" href="https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/mouradlhousni/restaurant-demo/master/blueprint.json" target="_blank" rel="noopener">▶ Lancer la démo</a>
+		<h3>Ce que fait le blueprint (≈ 30 à 60 s)</h3>
+		<ol>
+			<li>Installe WordPress (dernière version) sur PHP 8.2.</li>
+			<li>Définit <code>OE_DEMO_MODE = true</code> et <code>OE_STATIC_BUILD = false</code> dans <code>wp-config.php</code>.</li>
+			<li>Installe et active le plugin <code>oe-reservations</code> depuis <code>plugins/oe-reservations</code>.</li>
+			<li>Installe et active le thème <code>olive-ember</code> depuis <code>themes/olive-ember</code>.</li>
+			<li>Active les permaliens <code>/%postname%/</code>.</li>
+			<li>Lance <code>wp oe seed --images=8</code> (plats, réglages, réservations de démo).</li>
+			<li>Connecte l'utilisateur <code>admin</code> et ouvre la page d'accueil.</li>
+		</ol>
+	</div>
+</section>
+
+<section class="step">
+	<span class="num">4</span>
+	<div>
+		<h2>Tester la démo (checklist)</h2>
+		<p>Coche au fur et à mesure (rien n'est enregistré, c'est juste pour toi) :</p>
+		<ul class="check">
+			<li><label><input type="checkbox"> Le bandeau discret « Demo site » apparaît en front</label></li>
+			<li><label><input type="checkbox"> Accueil : hero, histoire du chef, plats signature, avis, CTA réservation</label></li>
+			<li><label><input type="checkbox"> Menu : les sections s'affichent avec les photos, les filtres allergènes / régimes fonctionnent</label></li>
+			<li><label><input type="checkbox"> Contact : horaires dynamiques, badge « Open now / Closed », carte OpenStreetMap</label></li>
+			<li><label><input type="checkbox"> Réservation : date → personnes → créneau → coordonnées → confirmation</label></li>
+			<li><label><input type="checkbox"> Les créneaux viennent bien de l'API (<code>/wp-json/oe/v1/availability</code>)</label></li>
+			<li><label><input type="checkbox"> La soumission affiche « Demo mode: the form works, but no data is stored or sent. » et un récapitulatif fictif</label></li>
+			<li><label><input type="checkbox"> Admin : notice « demo mode » visible</label></li>
+			<li><label><input type="checkbox"> Admin → Reservations : liste, filtres, vue « service du jour », export CSV</label></li>
+			<li><label><input type="checkbox"> Admin → Menu items et réglages des réservations accessibles</label></li>
+			<li><label><input type="checkbox"> Aucune erreur dans la console du navigateur (F12)</label></li>
+		</ul>
+	</div>
+</section>
+
+<section class="step">
+	<span class="num">5</span>
+	<div>
+		<h2>Tester en local avant de pousser (optionnel)</h2>
+		<p>La CLI officielle lance le même blueprint sur ta machine (Node 20+) :</p>
+		<pre><code>npx @wp-playground/cli@latest server --blueprint=./blueprint.json</code></pre>
+		<p>Puis ouvre <code>http://127.0.0.1:9400</code>. Attention : le blueprint télécharge toujours le code <strong>depuis GitHub</strong>.
+		Pour tester des modifications non poussées, monte les dossiers locaux à la place :</p>
+		<pre><code>npx @wp-playground/cli@latest server --login \
+  --mount=./plugins/oe-reservations:/wordpress/wp-content/plugins/oe-reservations \
+  --mount=./themes/olive-ember:/wordpress/wp-content/themes/olive-ember</code></pre>
+		<p>puis active plugin et thème, et lance <code>wp oe seed</code> depuis l'admin ou via une étape wp-cli.</p>
+	</div>
+</section>
+
+<section class="step">
+	<span class="num">6</span>
+	<div>
+		<h2>Partager la démo</h2>
+		<ul>
+			<li><strong>README</strong> : le lien « Try the live demo in WordPress Playground » est déjà en place.</li>
+			<li><strong>Upwork</strong> : ajoute le lien dans le projet du portfolio, avec une capture et une phrase du type
+				« Runs entirely in your browser — nothing is hosted, demo mode on. »</li>
+			<li><strong>Lien direct vers la réservation</strong> : change <code>"landingPage"</code> dans <code>blueprint.json</code>
+				(par ex. <code>"/reservation/"</code>) si tu veux un lien qui ouvre directement le formulaire, ou crée un second blueprint.</li>
+			<li><strong>Lien vers l'admin</strong> : <code>"landingPage": "/wp-admin/admin.php?page=…"</code> pour montrer directement l'écran Reservations.</li>
+			<li>Ajoute le lien Playground dans la version statique (<code>dist/</code>) — le bloc « Reservation Form » pointe déjà vers « Try the booking flow live ».</li>
+		</ul>
+	</div>
+</section>
+
+<section class="step">
+	<span class="num">7</span>
+	<div>
+		<h2>Dépannage</h2>
+		<table>
+			<tr><th>Symptôme</th><th>Cause probable / solution</th></tr>
+			<tr><td>Erreur au chargement du blueprint</td><td>Dépôt privé, mauvaise branche (<code>master</code> vs <code>main</code>) ou JSON invalide. Valide le fichier sur <a href="https://playground.wordpress.net/builder/builder.html" target="_blank" rel="noopener">le Blueprint builder</a>.</td></tr>
+			<tr><td>Ancienne version affichée après un push</td><td>Cache <code>raw.githubusercontent.com</code> (~5 min) ou cache du navigateur : fenêtre privée.</td></tr>
+			<tr><td>Échec de l'étape <code>installPlugin</code> / <code>installTheme</code></td><td>Chemin <code>path</code> incorrect dans le blueprint, ou dossier renommé dans le dépôt.</td></tr>
+			<tr><td>Blocs vides ou cassés</td><td><code>build/</code> non recompilé / non commité : <code>npm run build</code> puis push.</td></tr>
+			<tr><td>Seed trop long ou timeout</td><td>Réduis le nombre d'images : <code>wp oe seed --images=4</code> (objectif &lt; 60 s).</td></tr>
+			<tr><td>Images absentes</td><td>Fichiers d'images non commités ou trop lourds ; vérifie qu'ils sont bien suivis par Git.</td></tr>
+			<tr><td>Page blanche / erreur PHP</td><td>Ajoute temporairement <code>"WP_DEBUG": true</code> dans l'étape <code>defineWpConfigConsts</code> et relance.</td></tr>
+		</table>
+	</div>
+</section>
+</main>
+<script>
+	document.querySelectorAll('[data-copy]').forEach(function (btn) {
+		btn.addEventListener('click', function () {
+			var input = document.getElementById(btn.dataset.copy);
+			var done = function () { btn.textContent = 'Copié ✓'; setTimeout(function () { btn.textContent = 'Copier'; }, 1500); };
+			if (navigator.clipboard) {
+				navigator.clipboard.writeText(input.value).then(done, function () { input.select(); });
+			} else { input.select(); document.execCommand('copy'); done(); }
+		});
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Olive & Ember – live demo",
+		"description": "Restaurant block theme and custom table reservation plugin, seeded with a menu and bookings. Demo mode is on: the booking flow runs end to end but stores and sends nothing.",
+		"author": "mouradlhousni",
+		"categories": [
+			"Theme",
+			"Plugin"
+		]
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.2",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"login": true,
+	"steps": [
+		{
+			"step": "defineWpConfigConsts",
+			"consts": {
+				"OE_DEMO_MODE": true,
+				"OE_STATIC_BUILD": false
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "git:directory",
+				"url": "https://github.com/mouradlhousni/restaurant-demo",
+				"ref": "master",
+				"refType": "branch",
+				"path": "plugins/oe-reservations"
+			},
+			"options": {
+				"activate": true,
+				"targetFolderName": "oe-reservations"
+			}
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "git:directory",
+				"url": "https://github.com/mouradlhousni/restaurant-demo",
+				"ref": "master",
+				"refType": "branch",
+				"path": "themes/olive-ember"
+			},
+			"options": {
+				"activate": true,
+				"targetFolderName": "olive-ember"
+			}
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"permalink_structure": "/%postname%/"
+			}
+		},
+		{
+			"step": "wp-cli",
+			"command": "wp oe seed --images=8"
+		}
+	]
+}

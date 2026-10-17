@@ -1,0 +1,610 @@
+/* Reservation Form block (also styles the cancellation panel). */
+
+.oe-booking-form {
+	--oe-ink: var(--wp--preset--color--tapenade, #1e2118);
+	--oe-ink-soft: var(--wp--preset--color--tapenade-soft, #5a5e50);
+	--oe-paper: var(--wp--preset--color--chalk, #fbf6ee);
+	--oe-cream: var(--wp--preset--color--cream, #f4eadb);
+	--oe-surface: var(--wp--preset--color--surface, #fff);
+	--oe-stone: var(--wp--preset--color--limestone, #e8dfd0);
+	--oe-accent: var(--wp--preset--color--saffron, #f2b33d);
+	--oe-ember-deep: var(--wp--preset--color--ember-deep, #c2410c);
+	--oe-olive: var(--wp--preset--color--olive, #4f5b2a);
+	--oe-error: #a3271a;
+	--oe-radius: 1rem;
+}
+
+.oe-booking {
+	padding: clamp(1.25rem, 4vw, 2.75rem);
+	border-radius: 1.5rem;
+	background: var(--oe-surface);
+	box-shadow: var(--wp--preset--shadow--card, 0 20px 40px -24px rgb(30 33 24 / 0.28));
+}
+
+.oe-booking__title {
+	margin: 0 0 1.5rem;
+}
+
+/* Progress: numbered circles joined by a line (olive = done, ember = current). */
+.oe-progress {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	margin: 0 0 2rem;
+	padding: 0;
+	list-style: none;
+	counter-reset: none;
+}
+
+.oe-progress__step {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.45rem;
+	color: var(--oe-ink-soft);
+	font-size: 0.8rem;
+	font-weight: 600;
+	text-align: center;
+}
+
+.oe-progress__step + .oe-progress__step::before {
+	position: absolute;
+	top: 1.05rem;
+	right: 50%;
+	width: 100%;
+	height: 2px;
+	background: var(--oe-stone);
+	content: "";
+}
+
+.oe-progress__num {
+	position: relative;
+	z-index: 1;
+	display: inline-grid;
+	width: 2.1rem;
+	height: 2.1rem;
+	border: 1.5px solid var(--oe-stone);
+	border-radius: 50%;
+	background: var(--oe-surface);
+	color: var(--oe-ink);
+	font-family: var(--wp--preset--font-family--display, sans-serif);
+	font-size: 0.85rem;
+	font-weight: 600;
+	place-items: center;
+	transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.oe-progress__step.is-done::before,
+.oe-progress__step[aria-current="step"]::before {
+	background: var(--oe-olive);
+}
+
+.oe-progress__step.is-done .oe-progress__num {
+	border-color: var(--oe-olive);
+	background: var(--oe-olive);
+	color: var(--oe-surface);
+}
+
+.oe-progress__step[aria-current="step"] {
+	color: var(--oe-ink);
+	font-weight: 700;
+}
+
+.oe-progress__step[aria-current="step"] .oe-progress__num {
+	border-color: var(--oe-ember-deep);
+	background: var(--oe-ember-deep);
+	box-shadow: 0 0 0 5px color-mix(in srgb, var(--oe-ember-deep) 15%, transparent);
+	color: var(--oe-surface);
+}
+
+/* Steps */
+.oe-step {
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.oe-step[hidden] {
+	display: none;
+}
+
+.oe-step__title {
+	margin-bottom: 1rem;
+	padding: 0;
+	font-family: var(--wp--preset--font-family--display, sans-serif);
+	font-size: clamp(1.35rem, 3vw, 1.75rem);
+	line-height: 1.2;
+}
+
+.oe-step__title:focus {
+	outline: none;
+}
+
+.oe-step__title:focus-visible {
+	outline: 3px solid var(--oe-accent);
+	outline-offset: 4px;
+}
+
+.oe-step__context {
+	margin: -0.5rem 0 1rem;
+	font-weight: 600;
+}
+
+/* Date tiles */
+.oe-dates {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(4.6rem, 1fr));
+	gap: 0.5rem;
+	margin-bottom: 1.25rem;
+}
+
+.oe-date {
+	position: relative;
+	display: grid;
+	padding: 0.55rem 0.25rem;
+	border: 1.5px solid var(--oe-stone);
+	border-radius: 1rem;
+	background: var(--oe-surface);
+	text-align: center;
+	cursor: pointer;
+	transition: border-color 0.15s, background-color 0.15s;
+}
+
+.oe-date input,
+.oe-choice input {
+	position: absolute;
+	opacity: 0;
+	inset: 0;
+	cursor: inherit;
+}
+
+.oe-date__top,
+.oe-date__month {
+	font-size: 0.75rem;
+	font-weight: 600;
+}
+
+.oe-date__day {
+	font-family: var(--wp--preset--font-family--display, sans-serif);
+	font-size: 1.6rem;
+	line-height: 1.1;
+}
+
+.oe-date:hover {
+	border-color: var(--oe-ink);
+}
+
+.oe-date:has(input:checked) {
+	border-color: var(--oe-olive);
+	background: var(--oe-olive);
+	color: var(--oe-surface);
+}
+
+.oe-date:has(input:focus-visible),
+.oe-choice:has(input:focus-visible) {
+	outline: 3px solid var(--oe-accent);
+	outline-offset: 2px;
+}
+
+.oe-date.is-closed {
+	border-style: dashed;
+	cursor: not-allowed;
+	opacity: 0.45;
+}
+
+/* Choices (guests, times) */
+.oe-choices {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.oe-choice {
+	position: relative;
+	cursor: pointer;
+}
+
+.oe-choice span {
+	display: inline-grid;
+	min-width: 3.25rem;
+	min-height: 3rem;
+	padding: 0.35rem 1.1rem;
+	border: 1.5px solid var(--oe-stone);
+	border-radius: 999px;
+	background: var(--oe-surface);
+	font-family: var(--wp--preset--font-family--display, sans-serif);
+	font-size: 1.05rem;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	place-items: center;
+	transition: border-color 0.15s, background-color 0.15s;
+}
+
+.oe-choice span small {
+	display: block;
+	font-size: 0.7rem;
+	font-weight: 600;
+}
+
+.oe-choice:hover span {
+	border-color: var(--oe-ink);
+}
+
+.oe-choice input:checked + span {
+	border-color: var(--oe-olive);
+	background: var(--oe-olive);
+	color: var(--oe-surface);
+}
+
+.oe-choice.is-unavailable {
+	cursor: not-allowed;
+}
+
+.oe-choice.is-unavailable span {
+	border-style: dashed;
+	color: #686a61;
+	text-decoration: line-through;
+}
+
+.oe-slot-group + .oe-slot-group {
+	margin-top: 1.25rem;
+}
+
+.oe-slot-group__title {
+	margin: 0 0 0.6rem;
+	color: var(--oe-olive);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+.oe-loading {
+	margin: 0;
+	opacity: 0.75;
+}
+
+/* Fields */
+.oe-fields {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+	gap: 1rem 1.25rem;
+}
+
+.oe-field {
+	display: grid;
+	gap: 0.3rem;
+	margin: 0;
+}
+
+.oe-field--wide {
+	grid-column: 1 / -1;
+}
+
+.oe-field--inline {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem 1rem;
+}
+
+.oe-field label {
+	font-weight: 700;
+}
+
+.oe-field input,
+.oe-field textarea {
+	width: 100%;
+	padding: 0.75rem 0.9rem;
+	border: 1.5px solid color-mix(in srgb, var(--oe-ink) 30%, transparent);
+	border-radius: 0.75rem;
+	background: #fff;
+	color: var(--oe-ink);
+	font: inherit;
+}
+
+.oe-field--inline input {
+	width: auto;
+}
+
+.oe-field input:focus,
+.oe-field textarea:focus {
+	border-color: var(--oe-ink);
+	outline: 3px solid color-mix(in srgb, var(--oe-accent) 70%, transparent);
+	outline-offset: 1px;
+}
+
+.oe-field [aria-invalid="true"] {
+	border-color: var(--oe-error);
+}
+
+.oe-required,
+.oe-field-error {
+	color: var(--oe-error);
+}
+
+.oe-field-error {
+	margin: 0.4rem 0 0;
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.oe-field-error[hidden] {
+	display: none;
+}
+
+.oe-optional,
+.oe-help {
+	font-size: 0.875rem;
+	opacity: 0.75;
+}
+
+.oe-help {
+	margin: 0.75rem 0 0;
+}
+
+.oe-field .oe-help {
+	margin: 0;
+}
+
+/* Honeypot: out of sight, out of the accessibility tree. */
+.oe-hp {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+/* Summary */
+.oe-summary {
+	display: grid;
+	margin: 0;
+}
+
+.oe-summary > div {
+	display: grid;
+	grid-template-columns: minmax(7rem, 35%) 1fr;
+	gap: 1rem;
+	padding: 0.6rem 0;
+	border-bottom: 1px solid var(--oe-stone);
+}
+
+.oe-summary dt {
+	opacity: 0.7;
+}
+
+.oe-summary dd {
+	margin: 0;
+	font-weight: 700;
+	overflow-wrap: anywhere;
+}
+
+/* Navigation and buttons */
+.oe-booking__nav {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 0.75rem;
+	margin-top: 1.75rem;
+}
+
+.oe-booking__nav [data-action="next"] {
+	margin-left: auto;
+}
+
+.oe-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	min-height: 3rem;
+	padding: 0.7rem 1.6rem;
+	border: 2px solid var(--oe-ember-deep);
+	border-radius: 999px;
+	background: var(--oe-ember-deep);
+	color: #fff;
+	font: inherit;
+	font-weight: 700;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background-color 0.15s, color 0.15s;
+}
+
+.oe-button:hover {
+	border-color: var(--oe-ink);
+	background: var(--oe-ink);
+	color: #fff;
+}
+
+.oe-button:focus-visible {
+	outline: 3px solid var(--oe-accent);
+	outline-offset: 3px;
+}
+
+.oe-button[disabled] {
+	cursor: progress;
+	opacity: 0.7;
+}
+
+.oe-button--ghost {
+	border-color: var(--oe-ink);
+	background: transparent;
+	color: var(--oe-ink);
+}
+
+.oe-button--danger {
+	border-color: var(--oe-error);
+	background: var(--oe-error);
+}
+
+/* Alerts and notices */
+.oe-booking__alert {
+	margin-bottom: 1.25rem;
+	padding: 0.85rem 1rem;
+	border-left: 4px solid var(--oe-error);
+	border-radius: 0.5rem;
+	background: color-mix(in srgb, var(--oe-error) 9%, #fff);
+	font-weight: 600;
+}
+
+.oe-booking__alert[hidden] {
+	display: none;
+}
+
+.oe-notice {
+	margin: 0 0 1rem;
+	padding: 1rem 1.25rem;
+	border-left: 4px solid var(--oe-olive);
+	border-radius: 0.75rem;
+	background: color-mix(in srgb, var(--oe-olive) 8%, #fff);
+}
+
+.oe-notice--success {
+	border-color: #3f9b4f;
+	background: color-mix(in srgb, #3f9b4f 9%, #fff);
+}
+
+.oe-notice--error {
+	border-color: var(--oe-error);
+	background: color-mix(in srgb, var(--oe-error) 8%, #fff);
+}
+
+.oe-notice__title {
+	margin: 0 0 0.25rem;
+	font-weight: 800;
+}
+
+.oe-notice p:last-child {
+	margin-bottom: 0;
+}
+
+/* Done */
+.oe-booking__done {
+	text-align: left;
+}
+
+.oe-booking__done:focus {
+	outline: none;
+}
+
+.oe-booking__done-mark {
+	width: 3.5rem;
+	height: 3.5rem;
+	margin: 0 0 1rem;
+	border-radius: 50%;
+	background: radial-gradient(circle at 40% 40%, #ffd58a, var(--oe-accent) 50%, var(--wp--preset--color--ember, #c2461f));
+	box-shadow: 0 0 2rem 0.25rem color-mix(in srgb, var(--oe-accent) 50%, transparent);
+}
+
+.oe-booking__done-title {
+	margin: 0 0 0.5rem;
+	font-family: var(--wp--preset--font-family--display, sans-serif);
+	font-size: clamp(1.6rem, 4vw, 2.25rem);
+}
+
+.oe-booking__done .oe-summary {
+	margin: 1.25rem 0;
+}
+
+.oe-booking__done.is-demo .oe-booking__done-message {
+	padding: 0.75rem 1rem;
+	border-radius: 0.75rem;
+	background: color-mix(in srgb, var(--oe-accent) 22%, #fff);
+	font-weight: 600;
+}
+
+/* Cancellation panel */
+.oe-cancel__title {
+	margin-top: 0;
+}
+
+.oe-cancel form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-top: 1.5rem;
+}
+
+/* Static export preview */
+.oe-mockup {
+	margin: 1.5rem 0;
+	padding: 1.25rem;
+	border: 1.5px dashed var(--oe-stone);
+	border-radius: var(--oe-radius);
+}
+
+.oe-mockup__label {
+	margin: 0 0 0.75rem;
+	font-weight: 700;
+}
+
+.oe-mockup .oe-slots {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.oe-slot {
+	padding: 0.5rem 1.1rem;
+	border: 1.5px solid var(--oe-stone);
+	border-radius: 999px;
+	background: var(--oe-surface);
+	font-family: var(--wp--preset--font-family--display, sans-serif);
+	font-weight: 600;
+}
+
+.oe-slot.is-full {
+	border-style: dashed;
+	color: #686a61;
+	text-decoration: line-through;
+}
+
+.oe-static-steps {
+	margin: 0 0 1.5rem;
+	padding-left: 1.25rem;
+}
+
+@media (max-width: 40rem) {
+
+	.oe-progress__label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+	}
+
+	.oe-progress__step[aria-current="step"] .oe-progress__label {
+		position: static;
+		width: auto;
+		height: auto;
+		clip: auto;
+		white-space: nowrap;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.oe-date,
+	.oe-choice span,
+	.oe-button,
+	.oe-progress__num {
+		transition: none;
+	}
+}
+
+.oe-booking-form [hidden] {
+	display: none !important;
+}
+
+.oe-booking-form *,
+.oe-booking-form *::before,
+.oe-booking-form *::after {
+	box-sizing: border-box;
+}
+
+.oe-booking-form .oe-field {
+	align-content: start;
+}

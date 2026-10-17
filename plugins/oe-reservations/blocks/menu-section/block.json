@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "oe/menu-section",
+	"title": "Menu Section",
+	"category": "widgets",
+	"icon": "food",
+	"description": "Displays one section of the menu (or the Chef's picks), with allergen and diet filters.",
+	"keywords": [ "menu", "dishes", "food", "allergens", "restaurant" ],
+	"textdomain": "oe-reservations",
+	"attributes": {
+		"section": { "type": "string", "default": "" },
+		"chefsPicks": { "type": "boolean", "default": false },
+		"showFilters": { "type": "boolean", "default": true },
+		"showTitle": { "type": "boolean", "default": true },
+		"showImages": { "type": "boolean", "default": true },
+		"layout": { "type": "string", "enum": [ "list", "grid" ], "default": "list" }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"anchor": true
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}
